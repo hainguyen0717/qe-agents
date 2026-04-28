@@ -34,7 +34,7 @@ tests/
 ## Page Object Model (POM)
 
 ```typescript
-import { Page, Locator } from '@playwright/test'
+import { Page, Locator, expect } from '@playwright/test'
 
 export class ItemsPage {
   readonly page: Page
@@ -51,13 +51,13 @@ export class ItemsPage {
 
   async goto() {
     await this.page.goto('/items')
-    await this.page.waitForLoadState('networkidle')
+    await expect(this.searchInput).toBeVisible()
   }
 
   async search(query: string) {
     await this.searchInput.fill(query)
     await this.page.waitForResponse(resp => resp.url().includes('/api/search'))
-    await this.page.waitForLoadState('networkidle')
+    await expect(this.itemCards.first()).toBeVisible()
   }
 
   async getItemCount() {
@@ -186,9 +186,17 @@ await page.click('[data-testid="menu-item"]')
 
 // Good: wait for stability
 await page.locator('[data-testid="menu-item"]').waitFor({ state: 'visible' })
-await page.waitForLoadState('networkidle')
 await page.locator('[data-testid="menu-item"]').click()
 ```
+
+## Waiting Strategy (Prefer User-Visible Readiness)
+
+Playwright discourages relying on `networkidle` for test readiness because modern apps may keep background requests open and create false waits/flaky timing. Prefer waiting for explicit UI or domain signals:
+
+- `await expect(locator).toBeVisible()` for rendered/interactive content
+- `await expect(locator).toHaveText(...)` or `toContainText(...)` for data-bound updates
+- `await page.waitForResponse(...)` only when tied to a specific request relevant to the action
+- Locator actions/assertions (`click`, `fill`, `expect`) leverage Playwright auto-waiting and should be the default synchronization mechanism
 
 ## Artifact Management
 
