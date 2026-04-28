@@ -8,22 +8,22 @@ The agent reads your project structure and generates test scripts that match you
 
 ```
 agents/
-  e2e-runner.md       # Agent definition
+  e2e-script-writer.md  # Agent definition
 skills/
   e2e-testing/
-    SKILL.md          # Pattern library
+    SKILL.md              # Pattern library
 ```
 
 ## How It Works
 
-- **Agent** (`e2e-runner`) — the decision-maker. Reads the project, plans test journeys, generates scripts, handles flaky tests, validates CI.
+- **Agent** (`e2e-script-writer`) — the decision-maker. Reads the project, plans test journeys, generates scripts, handles flaky tests, validates CI.
 - **Skill** (`e2e-testing`) — the pattern library. POM templates, config, flaky strategies, artifact management, CI/CD setup.
 
 The agent draws from the skill. When patterns change, update the skill once — the agent picks it up automatically.
 
 ## Setup (GitHub Copilot in VS Code)
 
-1. Copy `agents/e2e-runner.md` to `.github/agents/e2e-runner.agent.md` in your project
+1. Copy `agents/e2e-script-writer.md` to `.github/agents/e2e-script-writer.agent.md` in your project
 2. Copy `skills/e2e-testing/SKILL.md` to `.github/prompts/skills/e2e-testing/SKILL.md` in your project
 3. Reload VS Code — the agent will appear in Copilot chat
 
@@ -34,7 +34,7 @@ The agent draws from the skill. When patterns change, update the skill once — 
 Provide your test scenarios directly — the agent follows them exactly:
 
 ```
-@e2e-runner create tests for the login flow:
+@e2e-script-writer create tests for the login flow:
 - Happy path: valid credentials → redirect to dashboard
 - Failed login: wrong password → error message shown
 - Locked account: 5 failed attempts → lockout screen
@@ -43,8 +43,8 @@ Provide your test scenarios directly — the agent follows them exactly:
 Other prompts:
 
 ```
-@e2e-runner update the search tests — the input selector changed
-@e2e-runner identify flaky tests in tests/e2e/auth/
+@e2e-script-writer update the search tests — the input selector changed
+@e2e-script-writer identify flaky tests in tests/e2e/auth/
 ```
 
 ## Adapt It

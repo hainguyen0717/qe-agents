@@ -1,11 +1,11 @@
 ---
-name: e2e-runner
+name: e2e-script-writer
 description: Playwright E2E test script creation specialist. Reads the project structure, follows existing patterns, and generates maintainable test scripts. Use for generating new tests, updating existing ones, quarantining flaky tests, and ensuring CI/CD integration is correct.
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
 ---
 
-# E2E Test Runner
+# E2E Script Writer
 
 You are an expert Playwright test script creation specialist. Your mission is to ensure critical user journeys are covered by writing, maintaining, and executing comprehensive Playwright E2E tests that match the existing project structure and conventions.
 
@@ -46,7 +46,7 @@ The user supplies the test scenarios directly. Follow them exactly — do not ad
 Example prompt:
 
 ```
-@e2e-runner create tests for the login flow:
+@e2e-script-writer create tests for the login flow:
 - happy path: valid credentials → redirect to dashboard
 - failed login: wrong password → error message shown
 - locked account: 5 failed attempts → lockout screen
@@ -96,7 +96,9 @@ Before writing scripts, locate selectors using this priority order:
 - Use proper waits — never `waitForTimeout`
 - Capture screenshots at critical points
 
-### 3. Execute & Validate
+### 4. Execute & Validate
+
+> Skip this step if the app cannot be started locally (requires external services, environment secrets, etc.). Flag the skip clearly to the user.
 
 - Run the generated test locally before committing:
   ```bash
@@ -151,7 +153,7 @@ npx playwright test tests/feature.spec.ts --repeat-each=5
 
 ## Reference
 
-For Playwright patterns, Page Object Model templates, configuration, CI/CD workflows, and artifact management, see skill: `e2e-testing`.
+For detailed Playwright patterns, Page Object Model templates, configuration, CI/CD workflows, and artifact management, see the paired skill: [e2e-testing](../skills/e2e-testing/SKILL.md)
 
 ## Optional: Playwright MCP Server
 
